@@ -1,0 +1,88 @@
+AUTHOR:  ENAS YUNIS
+
+PARSING:
+	- you can run two (or more) different expressions in one line
+	- you can run one expression on multiple lines
+	- any number is acceptable as long as it can be parsed by Integer.parseInt()
+	  Note: Integer.parseInt("+1") fails - so corrections have been added!!
+	- () is NIL regardless of where it is in the expression
+	- Due to the complexity of error handling, this Reader focuses on
+		getting the next s-exp from the command line(s) regardless of correctness
+		for atomic, it reads in until the next separator (, ), ., \s
+		for nonatomic, it reads until it matches ( )	
+
+FORMATTING:
+	- output is formatted to output each expression on its own line
+      FORMAT: expression-Number >> OUTPUT
+      FORMAT: expression-Number >> ERROR Message
+	- output is setup for max listing thus:
+	  ((2.NIL).1) will be ((2).1)
+	  (().(().())) will be (NIL NIL)
+
+EXIT:
+	- The code will exit on (EXIT) or (EXIT 1 2 3)
+	- It will also exit the moment EXIT is evaluated when evaluated
+	  within a function call
+
+ERRORS:
+	- Car/Cdr will give out an error when called on a non-expression
+	- Choice have been made to make a call and have an unspecified error
+	  over performing the same checks multiple times for better error msgs
+	- DEFUN can only be called at the top level eval 
+	- Correctness of a function body will only be done during the eval of the body
+
+FUNCTION BEHAVIOR:
+	- On a successfully added function T will be returned
+	- CONS require two parameter of any s-expreesion type
+	- ATOM, NULL, INT requires one parameter of any s-expression type
+	- C__R requires one paramter of any s-expression type and will error on 
+	  unreachable requests.
+	- EQ requires TWO parameters of any atomic s-expression type
+	- MINUS, PLUS, TIMES, QUOTIENT, REMAINDER, LESS, GREATER require two 
+	  paramters of Type INT only
+	- COND will only report an error with formatting when it is about to evaluate 
+	  a given b,e pairs only - so if the b,e pair was not reachable in evcon it 
+	  will not be tested for formatting errors.
+	- QUOTE will output exactly what it sees as its first argument as-is 
+          (no translation - just parsing)
+
+DESIGN DECISIONS:
+	- you can call cXr where X matches [ad]{1-8}
+	- functions are lookedup by the most recently added that has a matching number of arguments, 
+          if none found that match the number of arguments, then we error
+
+WHAT IS HERE:
+
+	InterpreterP1.java - 
+	IOHelper.java -
+	LispException.java -
+	SExpReader.java -
+	Tokenizer.java -
+	SExpWriter.java -
+			See designP1.txt
+
+	LispSysP2.jar -
+			after compiling, the class files are bundled in the jar and
+			deleted after words. 			
+
+	Makefile -
+			To compile and run call: make
+			To run only call:        make run
+			With Input Files:	 make < test.txt  or  make run < test.txt
+
+	READMEP1 -
+	READMEP2 - 
+			Includes how to compile and run the interpreter
+
+
+	InterpreterP2.java - 
+			Contains all the Part 2 work per the slides with added error checking
+
+	SExp.java -
+			Is the building block object in the interpreter (atomic and nonatmoic)
+			It currently performs: CONS, CAR, CDR, EQ (atomic), ATOM, NULL, INT, isList
+			As well as create Atomic Expression with requirement checking
+
+	designP2.txt - 
+			ME
+			

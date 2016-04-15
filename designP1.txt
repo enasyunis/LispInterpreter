@@ -1,0 +1,111 @@
+AUTHOR:  ENAS YUNIS
+
+PARSING:
+	- you can run two (or more) different expressions in one line
+	- you can run one expression on multiple lines
+	- any number is acceptable as long as it can be parsed by Integer.parseInt()
+	  Note: Integer.parseInt("+1") fails - so corrections have been added!!
+	- () is NIL regardless of where it is in the expression
+
+FORMATTING:
+	- output is formatted to output each expression on its own line
+      FORMAT: expression-Number >> OUTPUT
+      FORMAT: expression-Number >> ERROR Message
+	- output is setup for max listing thus:
+	  ((2.NIL).1) will be ((2).1)
+	  (().(().())) will be (NIL NIL)
+
+ERRORS:
+	- Errors inform you of what was expected rather than what rule it broke
+	  Example (1 . 2 .3) will error on the second . with the statement of
+	  expecting a closing parenthesis at that point.
+	- The system does not stop running from errors unless they where IOExceptions
+	  or other issues at the level of the JVM.
+
+DESIGN DECISIONS:
+	- Recursion has been used heavily in this system. I am sure the system can be 
+	  broken if we are attempting to break MAX-FUNCTION-CALL limits in java 
+	  (I broke it once in 2000 and it was around 15 levels of calls initiated from a JSP) 
+	- Tried to follow clisp as much as possible on a lot of decisions - had to go back
+	  and redo some of them just to meet the professors preference. 
+	- Max possible LIST notation has been followed. 
+	  To best test my system, put the same s-exp in dotted notation, mix notation, and list notation
+	  and call my system, then compare that the answer is always the same for all three.
+
+WHAT IS HERE:
+
+	InterpreterP1.java - 
+			entry code to the system
+			was added just to follow the instructions. 
+			original code belongs in LispSys.java
+
+			It performs input, output, repeat.
+
+			the code will not exit on user errors.
+			it will ignore bad input and continue
+
+	IOHelper.java -
+			Due to the complexity of parsing, this file
+			contains reusable functions between 
+			SExpReader and Tokenizer
+
+	LispException.java -
+			Separating recoverable errors from unrecoverable errors
+			so created this custom exception just to separate the issues
+
+
+	LispSysP1.jar -
+			after compiling, the class files are bundled in the jar and
+			deleted after words. 
+			
+
+	LispSys.java -
+			This is originally the main entry to the system. It is the
+			one responsible to reading in the input, eval, and outputting.
+			But has been reduced to hold the System level variables
+			Example: Symbolic Table (a hash map for quick lookup)
+			as well as the semi-eval function of IsExit() to allow a termination
+
+	Makefile -
+			To compile and run call: make
+			To run only call:        make run
+			With Input Files:		 make < test.txt  or  make run < test.txt
+
+	READMEP1 -
+			Includes how to compile and run the interpreter
+
+	SExp.java -
+			Is the building block object in the interpreter (atomic and nonatmoic)
+			It currently performs: CONS, CAR, CDR, EQ (atomic), ATOM, NULL, INT, isList
+			As well as create Atomic Expression with requirement checking
+
+	SExpReader.java -
+			Due to the complexity of error handling, this Reader focuses on
+			getting the next s-exp from the command line(s) regardless of correctness
+			for atomic, it reads in until the next separator (, ), ., \s
+			for nonatomic, it reads until it matches ( )
+
+	Tokenizer.java -
+			Due to the complexity, what originally was only one class ended up
+			splitting into three classes. The Tokenizer was reduced from being a complex
+			and powerful tokenizer, to just a simple nextToken picker from the String Stream.
+			I am sure, I could have coded it better and not relied on StringStream but it would
+			have taken longer to code in the changes.
+
+	SExpWriter.java -
+			originally was a simple call to SExp.toString() that handled the output - but per the
+			teacher requirements, expecting the output to be in control, the behavior was moved 
+			over and SExp.toString() was removed and replaced with getString() that only works for
+			atomic SExpressions.
+			Note: all calls are recursive. One a root has been deemed Not a List then all cddr are
+			deemed as not list and the call is only made once at the top level. the isList call
+			is made for all car (as new root) and all cadr (as new root) given any can be a list. 
+
+	designP1.txt - 
+			ME
+
+	test.txt -
+			Copying the best test cases from Piazza and adding it here to test with.
+			NOTE: Some test cases are good, but the answer on piazza for their correctness are wrong!!!		
+
+			

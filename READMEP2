@@ -1,0 +1,17 @@
+NAME:                     Enas Yunis
+CSE ID:                   yunisen
+
+To Compile and run:       make
+With Test File:           make < test.txt
+
+To Re-build:              make build
+To Re-clean:              make clean
+
+To Re-Run:                make run
+With Test File:           make run < test.txt
+
+To Exit Type:             (EXIT)
+
+NOTE:
+The code will exit on (EXIT 1 2 3)
+It will also exit the moment EXIT is evaluated with in a parent function
